@@ -67,3 +67,4 @@ def get_text(text_id: int):
         raise HTTPException(status_code=404, detail="Text not exists")
     else:
         return {"text": text.text}
+
