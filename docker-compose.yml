@@ -1,0 +1,85 @@
+version: "3.7"
+services:
+  db:
+    image: postgres
+    container_name: local_pgdb
+    command: -p 1221
+    expose:
+      - 1221
+    restart: always
+    env_file:
+      - .env-not-dev
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+#    command: -p 82
+#    expose:
+#      - 82
+    ports:
+      - "8889:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: root123
+    depends_on:
+      - db
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+  rabbit:
+    image: rabbitmq:latest
+    container_name: rabbit
+#    command: --port 5371
+#    expose:
+#      - 5371
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=async_python
+      - RABBITMQ_DEFAULT_PASS=12345
+    depends_on:
+      - pgadmin
+      - db
+    volumes:
+      - rabbit_data:/var/lib/rabbit
+
+
+
+  app:
+    build:
+      context: .
+      args:
+        DIRECTORY_PERMISSIONS: "755"
+    env_file:
+      - .env-not-dev
+    container_name: fastapi_app
+    command: ["/bin/sh", "-c", "alembic upgrade head && gunicorn src.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000"]
+    ports:
+      - "9999:8000"
+    depends_on:
+      - db
+      - pgadmin
+      - celery
+    volumes:
+      - fastapi_app_data:/var/lib/fastapi_app
+
+  celery:
+    build:
+      context: .
+    env_file:
+      - .env-not-dev
+    container_name: celery_app
+    command: ["/bin/sh", "-c", "celery --app=src.tasks:celery worker -l INFO"]
+    depends_on:
+      - rabbit
+    volumes:
+      - celery_data:/var/lib/celery
+
+volumes:
+  local_pgdata:
+  pgadmin-data:
+  fastapi_app_data:
+  rabbit_data:
+  celery_data:
