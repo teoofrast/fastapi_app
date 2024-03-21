@@ -7,7 +7,6 @@ from sqlalchemy.exc import SQLAlchemyError
 from src.database import engine
 from sqlalchemy.orm import sessionmaker
 from src.models import DocumentsText
-import os
 
 
 Session = sessionmaker(bind=engine)
@@ -22,8 +21,6 @@ celery.conf.broker_connection_retry_on_startup = True
 
 @celery.task(name='src.tasks.extract_text_from_image')
 def extract_text_from_image(file_path, image_id):
-    file_name = file_path.split('/')[-1]
-    file_path = os.path.join("fastapi_app/src/docs", file_name)
     # Используем pytesseract для извлечения текста из изображения
     img = Image.open(file_path)
     text = pytesseract.image_to_string(img, lang="rus")

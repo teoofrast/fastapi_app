@@ -54,7 +54,7 @@ def extract_text(image_id: int):
     if image is None:
         raise HTTPException(status_code=404, detail="Image not exists")
     else:
-        image_path = "/" + image.path
+        image_path = image.path
         result = extract_text_from_image.delay(image_path, image_id)
 
     return {'message': "Text extraction task submitted", "task_id": result.id, "image_path": image_path}
