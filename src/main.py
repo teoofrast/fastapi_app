@@ -23,7 +23,7 @@ def upload_file(file: UploadFile = File(...)):
     file_format = file.filename.split('.')[-1]
     if file_format in FORMAT:
         filename = str(uuid.uuid4()) + "_" + file.filename
-        file_path = f"src/docs/{filename}"
+        file_path = f"shared_data/{filename}"
         with open(file_path, 'wb') as f:
             f.write(file.file.read())
         d = Document(path=file_path)

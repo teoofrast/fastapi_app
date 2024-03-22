@@ -11,14 +11,13 @@ services:
       - .env
     volumes:
       - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/pgdata
+    networks:
+      - mynetwork
 
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin4_container
     restart: always
-#    command: -p 82
-#    expose:
-#      - 82
     ports:
       - "8889:80"
     environment:
@@ -28,13 +27,12 @@ services:
       - db
     volumes:
       - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/pgadmin
+    networks:
+      - mynetwork
 
   rabbit:
     image: rabbitmq:latest
     container_name: rabbit
-#    command: --port 5371
-#    expose:
-#      - 5371
     restart: always
     environment:
       - RABBITMQ_DEFAULT_USER=async_python
@@ -44,14 +42,14 @@ services:
       - db
     volumes:
       - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/rabbit
+    networks:
+      - mynetwork
 
 
 
   app:
     build:
       context: .
-      args:
-        DIRECTORY_PERMISSIONS: "755"
     env_file:
       - .env
     container_name: fastapi_app
@@ -63,7 +61,9 @@ services:
       - pgadmin
       - celery
     volumes:
-      - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/fastapi_app
+      - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/shared_data
+    networks:
+      - mynetwork
 
   celery:
     build:
@@ -75,7 +75,12 @@ services:
     depends_on:
       - rabbit
     volumes:
-      - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/celery
+      - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/shared_data
+    networks:
+      - mynetwork
 
 volumes:
   shared_volume:
+
+networks:
+  mynetwork:
