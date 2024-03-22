@@ -22,7 +22,7 @@ celery.conf.broker_connection_retry_on_startup = True
 @celery.task(name='src.tasks.extract_text_from_image')
 def extract_text_from_image(file_path, image_id):
     filename = file_path.split("/")[-1]
-    file_path = f"/fastapi_app/src/docs/{filename}"
+    file_path = f"fastapi_app:/fastapi_app/src/docs/{filename}"
     # Используем pytesseract для извлечения текста из изображения
     img = Image.open(file_path)
     text = pytesseract.image_to_string(img, lang="rus")

@@ -8,9 +8,9 @@ services:
       - 1221
     restart: always
     env_file:
-      - .env-not-dev
+      - .env
     volumes:
-      - local_pgdata:/var/lib/postgresql/data
+      - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/pgdata
 
   pgadmin:
     image: dpage/pgadmin4
@@ -27,7 +27,7 @@ services:
     depends_on:
       - db
     volumes:
-      - pgadmin-data:/var/lib/pgadmin
+      - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/pgadmin
 
   rabbit:
     image: rabbitmq:latest
@@ -43,7 +43,7 @@ services:
       - pgadmin
       - db
     volumes:
-      - rabbit_data:/var/lib/rabbit
+      - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/rabbit
 
 
 
@@ -53,7 +53,7 @@ services:
       args:
         DIRECTORY_PERMISSIONS: "755"
     env_file:
-      - .env-not-dev
+      - .env
     container_name: fastapi_app
     command: ["/bin/sh", "-c", "alembic upgrade head && gunicorn src.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000"]
     ports:
@@ -63,23 +63,19 @@ services:
       - pgadmin
       - celery
     volumes:
-      - fastapi_app_data:/var/lib/fastapi_app
+      - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/fastapi_app
 
   celery:
     build:
       context: .
     env_file:
-      - .env-not-dev
+      - .env
     container_name: celery_app
     command: ["/bin/sh", "-c", "celery --app=src.tasks:celery worker -l INFO"]
     depends_on:
       - rabbit
     volumes:
-      - celery_data:/var/lib/celery
+      - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/celery
 
 volumes:
-  local_pgdata:
-  pgadmin-data:
-  fastapi_app_data:
-  rabbit_data:
-  celery_data:
+  shared_volume:
