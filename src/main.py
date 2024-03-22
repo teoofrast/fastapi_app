@@ -20,6 +20,7 @@ FORMAT = os.getenv('format')
 
 @app.post("/upload_doc")
 def upload_file(file: UploadFile = File(...)):
+    """Загружает каритнку в общую папку shared_data и заносит параметры в БД PostgreSQL"""
     file_format = file.filename.split('.')[-1]
     if file_format in FORMAT:
         filename = str(uuid.uuid4()) + "_" + file.filename
@@ -37,6 +38,7 @@ def upload_file(file: UploadFile = File(...)):
 
 @app.post("/doc_delete/{files_id}")
 def delete_file(files_id: int):
+    """Удаляет каритнку из общей папки shared_data и удаляет параметры в БД PostgreSQL"""
     files = session.query(Document).filter(Document.id == files_id).first()
     if files is None:
         raise HTTPException(status_code=404, detail="Image not exists")
@@ -50,6 +52,7 @@ def delete_file(files_id: int):
 
 @app.post("/doc_analyze/{image_id}")
 def extract_text(image_id: int):
+    """Сканирует картинку и выдает текст содержащийся в картинке и заносит его в БД"""
     image = session.query(Document).filter(Document.id == image_id).first()
     if image is None:
         raise HTTPException(status_code=404, detail="Image not exists")
@@ -62,6 +65,7 @@ def extract_text(image_id: int):
 
 @app.get("/get_text/{text_id}")
 def get_text(text_id: int):
+    """Получает из картинки по id текст лежащий в БД"""
     text = session.query(DocumentsText).filter(DocumentsText.id_doc == text_id).first()
     if text is None:
         raise HTTPException(status_code=404, detail="Text not exists")
