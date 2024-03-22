@@ -10,7 +10,7 @@ services:
     env_file:
       - .env
     volumes:
-      - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/pgdata
+      - ./shared_volume:/fastapi_app/pgdata
     networks:
       - mynetwork
 
@@ -26,7 +26,7 @@ services:
     depends_on:
       - db
     volumes:
-      - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/pgadmin
+      - ./shared_volume:/fastapi_app/pgadmin
     networks:
       - mynetwork
 
@@ -41,7 +41,7 @@ services:
       - pgadmin
       - db
     volumes:
-      - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/rabbit
+      - ./shared_volume:/fastapi_app/rabbit
     networks:
       - mynetwork
 
@@ -61,7 +61,7 @@ services:
       - pgadmin
       - celery
     volumes:
-      - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/shared_data
+      - ./shared_volume:/fastapi_app/shared_data
     networks:
       - mynetwork
 
@@ -75,7 +75,7 @@ services:
     depends_on:
       - rabbit
     volumes:
-      - /home/teoofrast/Documents/pyproj/fastapi_app/shared_volume:/fastapi_app/shared_data
+      - ./shared_volume:/fastapi_app/shared_data
     networks:
       - mynetwork
 
