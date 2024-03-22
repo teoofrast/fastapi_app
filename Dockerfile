@@ -12,6 +12,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-RUN chmod 777 /fastapi_app/src/docs
-
 #CMD gunicorn src.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000
