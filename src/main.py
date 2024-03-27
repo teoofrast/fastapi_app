@@ -36,7 +36,7 @@ def upload_file(file: UploadFile = File(...)):
         raise HTTPException(status_code=404, detail="Unsupported file format")
 
 
-@app.post("/doc_delete/{files_id}")
+@app.delete("/doc_delete/{files_id}")
 def delete_file(files_id: int):
     """Удаляет каритнку из общей папки shared_data и удаляет параметры в БД PostgreSQL"""
     files = session.query(Document).filter(Document.id == files_id).first()
