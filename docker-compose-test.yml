@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  tests:
+    build:
+      context: .
+    env_file:
+      - .env
+    environment:
+      - PYTHONPATH=/fastapi_app
+    command: ["pytest", "--maxfail=1", "--disable-warnings", "-v", "src/"]
+    depends_on:
+      - app
+      - db
+    volumes:
+      - ./shared_volume:/fastapi_app/shared_data
+    networks:
+      - mynetwork
