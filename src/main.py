@@ -24,7 +24,7 @@ def upload_file(file: UploadFile = File(...)):
     file_format = file.filename.split('.')[-1]
     if file_format in FORMAT:
         filename = str(uuid.uuid4()) + "_" + file.filename
-        file_path = f"shared_data/{filename}"
+        file_path = f"shared_volume/{filename}"
         with open(file_path, 'wb') as f:
             f.write(file.file.read())
         d = Document(path=file_path)
@@ -38,7 +38,7 @@ def upload_file(file: UploadFile = File(...)):
 
 @app.delete("/doc_delete/{files_id}")
 def delete_file(files_id: int):
-    """Удаляет каритнку из общей папки shared_data и удаляет параметры в БД PostgreSQL"""
+    """Удаляет каритнку из общей папки shared_volume и удаляет параметры в БД PostgreSQL"""
     files = session.query(Document).filter(Document.id == files_id).first()
     if files is None:
         raise HTTPException(status_code=404, detail="Image not exists")
