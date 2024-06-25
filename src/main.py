@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 import os
 
+from src.pydentic_models import DocumentCheck
 from src.database import engine
 from src.models import Document, DocumentsText
 from sqlalchemy.orm import sessionmaker

@@ -1,4 +1,5 @@
 import pytest
+import warnings
 
 from fastapi.testclient import TestClient
 
@@ -7,7 +8,6 @@ from src.main import app
 client = TestClient(app)
 
 
-@pytest.mark.filterwarnings("ignore::DeprecationWarning")
 def test_connect_to_database(connection_to_postgres_db):
     """
     Проверяет создана ли запись в БД
