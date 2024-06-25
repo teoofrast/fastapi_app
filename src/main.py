@@ -1,7 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 import os
 
-
 from src.database import engine
 from src.models import Document, DocumentsText
 from sqlalchemy.orm import sessionmaker
@@ -13,7 +12,6 @@ app = FastAPI()
 Session = sessionmaker(bind=engine)
 session = Session()
 load_dotenv()
-
 
 FORMAT = os.getenv('format')
 
@@ -71,4 +69,3 @@ def get_text(text_id: int):
         raise HTTPException(status_code=404, detail="Text not exists")
     else:
         return {"text": text.text}
-
