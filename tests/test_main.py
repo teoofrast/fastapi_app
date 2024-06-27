@@ -1,4 +1,4 @@
-import pytest
+from baseclasses import BaseCheck
 
 
 def test_connect_to_database(connection_to_postgres_db):
@@ -13,5 +13,5 @@ def test_add_image_to_db(image_prebuild):
     Проверка на успешное добавление картинки
     """
     response = image_prebuild
-    assert response.status_code == 200
-    assert response.json()['message'] == "Image uploaded"
+    r = BaseCheck(response)
+    r.assert_response(200).assert_response_json({"message": 'Image uploaded'})

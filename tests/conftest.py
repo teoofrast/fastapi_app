@@ -1,7 +1,5 @@
-import os
 import pytest
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import insert, select
 
 from src.database import engine
 from src.models import Document
@@ -41,5 +39,3 @@ def image_prebuild():
     files = {'file': (file_name, file_content, 'image/jpg')}
     response = client.post("/upload_doc", files=files)
     yield response
-    file_path = response.json()['path']
-    os.remove(file_path)

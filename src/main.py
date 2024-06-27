@@ -30,7 +30,7 @@ def upload_file(file: UploadFile = File(...)):
         session.add(d)
         session.commit()
         session.close()
-        return {"message": "Image uploaded", "path": file_path}
+        return {"message": "Image uploaded"}
     else:
         raise HTTPException(status_code=404, detail="Unsupported file format")
 
