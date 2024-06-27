@@ -24,7 +24,6 @@ def connection_to_postgres_db():
     session.add(d)
     session.commit()
     session.close()
-
     query = session.query(Document)
     yield query
     session.query(Document).delete()
