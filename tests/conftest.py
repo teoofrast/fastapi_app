@@ -1,9 +1,9 @@
 import pytest
+import os
 from sqlalchemy.orm import sessionmaker
 
 from src.database import engine
 from src.models import Document
-
 
 from fastapi.testclient import TestClient
 
@@ -34,8 +34,17 @@ def connection_to_postgres_db():
 
 @pytest.fixture()
 def image_prebuild():
-    file_content = b"Test image content"
-    file_name = "123.jpg"
-    files = {'file': (file_name, file_content, 'image/jpg')}
+    file_name = "123.jpeg"
+    file_path = os.path.join(os.path.dirname(__file__), file_name)
+    with open(file_path, "rb") as image:
+        file_bytes = image.read()
+    files = {'file': (file_name, file_bytes, 'image/jpg')}
     response = client.post("/upload_doc", files=files)
+    yield response
+
+
+@pytest.fixture()
+def document_prebuild():
+    image_id = session.query(Document).first().id
+    response = client.post(f"/doc_analyze/{image_id}")
     yield response
