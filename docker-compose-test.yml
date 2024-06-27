@@ -13,6 +13,6 @@ services:
       - app
       - db
     volumes:
-      - ./shared_volume:/fastapi_app/shared_data
+      - ./shared_data:/fastapi_app/shared_data
     networks:
       - mynetwork
