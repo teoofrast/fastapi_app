@@ -1,9 +1,12 @@
+from fastapi import HTTPException
+
 import pytest
 import os
+import time
 from sqlalchemy.orm import sessionmaker
 
 from src.database import engine
-from src.models import Document
+from src.models import Document, DocumentsText
 
 from fastapi.testclient import TestClient
 
@@ -23,10 +26,9 @@ def connection_to_postgres_db():
     d = Document(path='shared_data/7750b6b9-5c99-49f1-98ff-f0c0e5903b09_dsa2.jpeg')
     session.add(d)
     session.commit()
-    session.close()
     query = session.query(Document)
     yield query
-    session.query(Document).delete()
+    session.delete(d)
     session.commit()
     session.close()
 
@@ -44,6 +46,20 @@ def image_prebuild():
 
 @pytest.fixture()
 def document_prebuild():
+    global image_id
     image_id = session.query(Document).first().id
     response = client.post(f"/doc_analyze/{image_id}")
+    yield response
+
+
+@pytest.fixture()
+def get_text_by_id():
+    time.sleep(10)
+    response = client.get(f"/get_text/{image_id}")
+    yield response
+
+
+@pytest.fixture()
+def delete_image():
+    response = client.delete(f"/doc_delete/{image_id}")
     yield response
