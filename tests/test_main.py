@@ -35,7 +35,6 @@ def test_get_text(get_text_by_id):
     r.assert_response(200)
     assert response.json()[
                'text'] == "Не понимаю встречи\nвыпускников. Вам же\nдали шанс не видеть\nдруг друга до конца\nжизни, что не так?\n\f"
-    print(response.json()['text'])
 
 def test_delete_image(delete_image):
     """
