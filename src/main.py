@@ -1,13 +1,13 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException
 import os
-
-from src.pydentic_models import DocumentCheck
-from src.database import engine
-from src.models import Document, DocumentsText
-from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
 import uuid
-from src.tasks import extract_text_from_image
+
+from dotenv import load_dotenv
+from sqlalchemy.orm import sessionmaker
+from fastapi import FastAPI, UploadFile, File, HTTPException
+
+from fastapi_app.src.database import engine
+from fastapi_app.src.models import Document, DocumentsText
+from fastapi_app.src.tasks import extract_text_from_image
 
 app = FastAPI()
 Session = sessionmaker(bind=engine)

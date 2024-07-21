@@ -1,16 +1,12 @@
-from fastapi import HTTPException
-
 import pytest
 import os
 import time
 from sqlalchemy.orm import sessionmaker
 
-from src.database import engine
-from src.models import Document, DocumentsText
-
+from fastapi_app.src.database import engine
+from fastapi_app.src.models import Document
 from fastapi.testclient import TestClient
-
-from src.main import app
+from fastapi_app.src.main import app
 
 client = TestClient(app)
 
