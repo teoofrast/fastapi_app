@@ -13,7 +13,6 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
-# Создаем экземпляр Celery
 celery = Celery(
                 'tasks',
                 result_backend='rpc://teoofrast:teoofrast@localhost:5672/',
