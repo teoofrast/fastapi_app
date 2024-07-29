@@ -14,8 +14,11 @@ session = Session()
 
 
 # Создаем экземпляр Celery
-celery = Celery('tasks', result_backend='rpc://async_python:12345@rabbit:5672/',
-                broker='amqp://async_python:12345@rabbit:5672/')
+celery = Celery(
+                'tasks',
+                result_backend='rpc://teoofrast:teoofrast@localhost:5672/',
+                broker='amqp://teoofrast:teoofrast@localhost:5672/'
+                )
 celery.conf.broker_connection_retry_on_startup = True
 
 

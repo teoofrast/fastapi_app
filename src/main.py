@@ -5,9 +5,9 @@ from dotenv import load_dotenv
 from sqlalchemy.orm import sessionmaker
 from fastapi import FastAPI, UploadFile, File, HTTPException
 
-from fastapi_app.src.database import engine
-from fastapi_app.src.models import Document, DocumentsText
-from fastapi_app.src.tasks import extract_text_from_image
+from src.database import engine
+from src.models import Document, DocumentsText
+from src.tasks import extract_text_from_image
 
 app = FastAPI()
 Session = sessionmaker(bind=engine)
@@ -23,7 +23,7 @@ def upload_file(file: UploadFile = File(...)):
     file_format = file.filename.split('.')[-1]
     if file_format in FORMAT:
         filename = str(uuid.uuid4()) + "_" + file.filename
-        file_path = f"shared_data/{filename}"
+        file_path = f"images/{filename}"
         with open(file_path, 'wb') as f:
             f.write(file.file.read())
         d = Document(path=file_path)
