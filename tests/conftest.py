@@ -52,5 +52,3 @@ def prepare_image():
     session.commit()
     yield new_image
     session.close()
-
-#last commit
