@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, TIMESTAMP
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, declarative_base
 from datetime import datetime
 
-from src.database import Base
+Base = declarative_base()
 
 
 class Document(Base):
