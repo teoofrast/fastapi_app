@@ -43,10 +43,7 @@ def test_upload_doc_invalid_format(prepare_client):
 def test_delete_doc(prepare_client, prepare_image):
     client = prepare_client
     image = prepare_image
-    path = prepare_image.path
-
-    response = client.delete(f"/delete_doc/{image.id}")
-    print(image.id, path)
-    print(response.json())
+    files_id = image.id
+    response = client.delete(f"/doc_delete/{files_id}")
     assert response.status_code == 200
-
+    assert response.json()['message'] == "Image deleted"
