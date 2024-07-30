@@ -52,5 +52,5 @@ def prepare_image():
     session.add(new_image)
     session.commit()
     yield new_image
-
+    session.close()
 
