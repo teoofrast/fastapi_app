@@ -3,9 +3,12 @@ import os
 import shutil
 import pytest
 
+from unittest.mock import MagicMock
+
 from src.database import engine
 from src.models import *
 from src.main import app, session
+from src.tasks import extract_text_from_image
 
 from fastapi.testclient import TestClient
 
@@ -40,7 +43,7 @@ def prepare_dir():
                 shutil.rmtree(file_path)
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def prepare_image():
     file_name = f"test_{uuid.uuid4()}.png"
     file_path = f"images/{file_name}"
@@ -52,3 +55,18 @@ def prepare_image():
     session.commit()
     yield new_image
     session.close()
+
+
+@pytest.fixture
+def prepare_extract_text_from_image(mocker, prepare_image):
+    file_path = "test_image.png"
+    image_id = prepare_image.id
+    mock_text = "Тестовый текст"
+
+    mock_image = MagicMock()
+    mocker.patch("PIL.Image.open", return_value=mock_image)
+
+    mocker.patch("pytesseract.image_to_string", return_value=mock_text)
+
+    result = extract_text_from_image(file_path, image_id)
+    yield image_id

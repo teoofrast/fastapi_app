@@ -32,7 +32,7 @@ def upload_file(file: UploadFile = File(...)):
         session.close()
         return {"message": "Image uploaded", "filename": filename}
     else:
-        raise HTTPException(status_code=404, detail="Unsupported file format")
+        raise HTTPException(status_code=415, detail="Unsupported file format")
 
 
 @app.delete("/doc_delete/{files_id}")
