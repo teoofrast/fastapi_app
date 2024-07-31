@@ -68,5 +68,5 @@ def prepare_extract_text_from_image(mocker, prepare_image):
 
     mocker.patch("pytesseract.image_to_string", return_value=mock_text)
 
-    result = extract_text_from_image(file_path, image_id)
+    extract_text_from_image(file_path, image_id)
     yield image_id
