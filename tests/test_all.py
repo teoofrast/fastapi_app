@@ -11,7 +11,7 @@ def test_connection_to_db():
     """
     with engine.connect() as connection:
         result = connection.execute(text("SELECT 1"))
-        assert result.scalar() == 1;
+        assert result.scalar() == 1
 
 
 def test_upload_doc(prepare_client):
@@ -47,3 +47,11 @@ def test_delete_doc(prepare_client, prepare_image):
     response = client.delete(f"/doc_delete/{files_id}")
     assert response.status_code == 200
     assert response.json()['message'] == "Image deleted"
+
+
+def test_delete_doc_without_image(prepare_client, prepare_image):
+    client = prepare_client
+    files_id = 100
+    response = client.delete(f"/doc_delete/{files_id}")
+    assert response.status_code == 404
+    assert response.json()['detail'] == "Image not exists"
