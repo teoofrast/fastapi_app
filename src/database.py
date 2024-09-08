@@ -16,7 +16,9 @@ DB_USER_TEST = os.getenv("DB_USER_TEST")
 DB_PASS_TEST = os.getenv("DB_PASS_TEST")
 DB_HOST_TEST = os.getenv("DB_HOST_TEST")
 
-if os.getenv("MOD") == "DEV":
-    engine = create_engine(f"postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
+if os.getenv("MOD") == "PROD":
+    database_url = f"postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 elif os.getenv("MOD") == "TEST":
-    engine = create_engine(f"postgresql+psycopg2://{DB_USER_TEST}:{DB_PASS_TEST}@{DB_HOST_TEST}:{DB_PORT_TEST}/{DB_NAME_TEST}")
+    database_url = f"postgresql+psycopg2://{DB_USER_TEST}:{DB_PASS_TEST}@{DB_HOST_TEST}:{DB_PORT_TEST}/{DB_NAME_TEST}"
+
+engine = create_engine(database_url)

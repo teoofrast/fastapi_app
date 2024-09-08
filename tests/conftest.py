@@ -5,6 +5,7 @@ import pytest
 
 from unittest.mock import MagicMock
 
+os.environ['MOD'] = "TEST"
 from src.database import engine
 from src.models import *
 from src.main import app, session

@@ -15,8 +15,8 @@ session = Session()
 
 celery = Celery(
                 'tasks',
-                result_backend='rpc://teoofrast:teoofrast@localhost:5672/',
-                broker='amqp://teoofrast:teoofrast@localhost:5672/'
+                result_backend='rpc://guest:guest@localhost:5672/',
+                broker='amqp://guest:guest@localhost:5672/'
                 )
 celery.conf.broker_connection_retry_on_startup = True
 
