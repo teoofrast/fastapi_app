@@ -1,31 +1,11 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 import uvicorn
 from fastapi.routing import APIRouter
-from sqlalchemy import Column, Boolean, String
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
-import settings
-from sqlalchemy.dialects.postgresql import UUID
-import uuid
-import re
-from pydantic import BaseModel, EmailStr, field_validator
 
-
-
-
-
-
-
-
-
+from api.handlers import user_router
 
 
 app = FastAPI(title='My API')
-
-user_router = APIRouter()
-
-
-
 
 main_api_router = APIRouter()
 
