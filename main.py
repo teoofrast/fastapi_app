@@ -11,9 +11,7 @@ import re
 from pydantic import BaseModel, EmailStr, field_validator
 
 
-engine = create_async_engine(settings.REAL_DATABASE_URL, future=True, echo=True)
 
-async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
 Base = declarative_base()
 
