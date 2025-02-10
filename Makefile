@@ -1,5 +1,5 @@
 up:
-    sudo docker compose -f docker-compose-local.yaml up -d
+	 sudo docker compose -f docker-compose-local.yaml up -d
 
 down:
-    sudo docker compose -f docker-compose-local.yaml down && sudo docker prune --force
+	 sudo docker compose -f docker-compose-local.yaml down && sudo docker system prune --force
